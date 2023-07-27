@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
 
   modalPicLegendWrapper: {
     padding: SIZES.large,
-    textAlign: 'justify',
   },
 
   modalPicTitle: {
@@ -51,6 +50,16 @@ const styles = StyleSheet.create({
   modalPicExplanation: {
     color: COLORS.primary,
     fontFamily: FONT.semibold,
+    fontSize: SIZES.medium,
+    textAlign: 'center',
+  },
+
+  modalPicCopyright: {
+    color: COLORS.secondary,
+    fontFamily: FONT.semiBoldItalic,
+    fontSize: SIZES.medium,
+    padding: SIZES.medium,
+    textAlign: 'center',
   },
 });
 

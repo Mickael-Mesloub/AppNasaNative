@@ -40,8 +40,8 @@ export const styles = StyleSheet.create({
 
   picOfTheDayTitle: {
     fontFamily: FONT.semiBoldItalic,
-    fontSize: SIZES.medium,
-    color: COLORS.primary,
+    fontSize: SIZES.large,
+    color: COLORS.secondary,
     textAlign: 'center',
   },
 

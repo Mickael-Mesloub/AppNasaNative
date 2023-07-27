@@ -44,7 +44,7 @@ const ImageModal = ({selectedImage, modalVisible, handleCloseModal, share}) => {
                 <Text style={styles.modalPicExplanation}>
                   {selectedImage.explanation}
                 </Text>
-                <Text style={styles.modalPicLegendText}>
+                <Text style={styles.modalPicCopyright}>
                   {selectedImage.copyright}
                 </Text>
               </View>

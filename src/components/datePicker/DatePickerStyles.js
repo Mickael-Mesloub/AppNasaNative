@@ -38,13 +38,25 @@ const styles = StyleSheet.create({
     ...SHADOWS.small,
   },
 
-  filterBtn: {
+  filterBtnDisabled: {
     padding: SIZES.small,
     borderRadius: SIZES.small,
     backgroundColor: COLORS.lightGrey,
   },
 
+  filterBtn: {
+    padding: SIZES.small,
+    borderRadius: SIZES.small,
+    backgroundColor: COLORS.secondary,
+  },
+
   filterBtnText: {
+    fontFamily: FONT.bold,
+    fontSize: SIZES.large,
+    color: COLORS.tertiary,
+  },
+
+  filterBtnTextDisabled: {
     fontFamily: FONT.bold,
     fontSize: SIZES.large,
     color: COLORS.grey,

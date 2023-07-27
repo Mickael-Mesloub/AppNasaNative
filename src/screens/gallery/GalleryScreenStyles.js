@@ -7,6 +7,21 @@ export const styles = StyleSheet.create({
     paddingVertical: SIZES.medium,
   },
 
+  galleryHeader: {
+    paddingHorizontal: SIZES.xSmall,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.tertiary,
+  },
+
+  galleryHeaderTitle: {
+    fontFamily: FONT.bold,
+    fontSize: SIZES.large,
+    color: COLORS.secondary,
+    padding: SIZES.small,
+    verticalAlign: 'middle',
+  },
+
   galleryPictureWrapper: {
     flex: 1,
     padding: SIZES.xSmall,
@@ -24,17 +39,5 @@ export const styles = StyleSheet.create({
   filterBar: {
     padding: SIZES.medium,
     flexDirection: 'row',
-  },
-
-  filterBtn: {
-    padding: SIZES.small,
-    borderRadius: SIZES.small,
-    backgroundColor: COLORS.secondary,
-  },
-
-  filterBtnText: {
-    fontFamily: FONT.bold,
-    fontSize: SIZES.large,
-    color: COLORS.tertiary,
   },
 });

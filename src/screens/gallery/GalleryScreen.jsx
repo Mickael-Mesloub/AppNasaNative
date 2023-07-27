@@ -16,8 +16,9 @@ import {styles} from './GalleryScreenStyles';
 import DateTimePicker from '../../components/datePicker/DateTimePicker';
 import {formatDate, share} from '../../helpers/utils';
 import ImageModal from '../../components/modal/ImageModal';
+import IconButton from '../../components/iconButton/IconButton';
 
-const Gallery = () => {
+const GalleryScreen = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
   const [isReversed, setIsReversed] = useState(false);
@@ -97,29 +98,33 @@ const Gallery = () => {
   //   Displays the data items from the most recent to older, or the other way
   const displayedData = isReversed ? [...data].reverse() : data;
 
-  //   useEffect(() => {
-  //     let testDate = new Date();
-  //     testDate.setDate(testDate.getDate() - 2);
-  //     const fullDate = formatDate(testDate);
-
-  //     if (data) {
-  //       const filteredData = data.filter(item => item.date === fullDate);
-  //       setFilteredImages(filteredData);
-  //       console.log('FILTERED PICTURE DATE = ' + filteredData);
-  //       console.log('FULLDATE =' + fullDate);
-  //     }
-  //   }, [date]);
+  useEffect(() => {
+    if (data) {
+      const filteredData = data.filter(item => item.date === date);
+      setFilteredImages(filteredData);
+      console.log('FILTERED PICTURE DATE = ' + filteredData);
+      console.log('FULLDATE =' + date);
+    }
+  }, [date, data]);
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.filterBar}> */}
-      {/********************* ********************  WIP  ********************* ******************** */}
+      <View style={styles.galleryHeader}>
+        <IconButton
+          iconOptions={{
+            name: 'arrow-back-outline',
+            size: 32,
+            color: COLORS.primary,
+          }}
+          onPress={() => navigation.navigate('Home')}
+        />
+        <Text style={styles.galleryHeaderTitle}>Gallery</Text>
+      </View>
+      <View style={styles.filterBar}>
+        {/********************* ********************  WIP  ********************* ******************** */}
 
-      {/* <DateTimePicker data={data} />
-        <Pressable style={styles.filterBtn}>
-          <Text style={styles.filterBtnText}>Filter</Text>
-        </Pressable>
-      </View> */}
+        {/* <DateTimePicker data={data} onDateChange={onDateChange} /> */}
+      </View>
 
       {/* <Pressable onPress={toggleChangeOrder}>
         <Text style={{color: COLORS.primary}}>Toggle order</Text>
@@ -144,4 +149,4 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default GalleryScreen;

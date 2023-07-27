@@ -1,23 +1,9 @@
-import {
-  ActivityIndicator,
-  Modal,
-  SafeAreaView,
-  Text,
-  Pressable,
-  TouchableOpacity,
-  View,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {ActivityIndicator, SafeAreaView, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {API_URL, API_KEY} from '@env';
+// import {API_URL, API_KEY} from '@env';
 import {styles} from './HomeScreenStyles';
 import {GET} from '../../helpers/fetch';
 import HomePictureCard from '../../components/cards/homePictureCard/HomePictureCard';
-import PictureModal from '../../components/pictureModal/PictureModal';
-
-import {COLORS, SIZES} from '../../constants/theme';
-import IconButton from '../../components/iconButton/IconButton';
 import {share} from '../../helpers/utils';
 import ImageModal from '../../components/modal/ImageModal';
 
