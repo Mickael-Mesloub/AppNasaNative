@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Nasa.ttf",
+      "sha1": "233ef493511aa7ab3c0a828357f89d74ede9da09"
+    },
+    {
+      "path": "src/assets/fonts/TitilliumWeb-Black.ttf",
+      "sha1": "89d3de80cadfe851af240e46e3e1e645a4718384"
+    },
+    {
+      "path": "src/assets/fonts/TitilliumWeb-Bold.ttf",
+      "sha1": "338a89991f9244d6392b647be9632e97fc285eb7"
+    },
+    {
+      "path": "src/assets/fonts/TitilliumWeb-BoldItalic.ttf",
+      "sha1": "12cf3aafa35a7a3aab657c5de356c2e116782f27"
+    },
+    {
+      "path": "src/assets/fonts/TitilliumWeb-Italic.ttf",
+      "sha1": "b3a11f1c28825d60c3a1482d78be3daaa4767d8e"
+    },
+    {
+      "path": "src/assets/fonts/TitilliumWeb-Regular.ttf",
+      "sha1": "d865b839ba95b93d11458f1ac530013965dd52ac"
+    },
+    {
+      "path": "src/assets/fonts/TitilliumWeb-SemiBold.ttf",
+      "sha1": "8fd5236a662501794f49e1b880338cc16cd7f5e9"
+    },
+    {
+      "path": "src/assets/fonts/TitilliumWeb-SemiBoldItalic.ttf",
+      "sha1": "8e23959076655564d509c79f903d8e6d6988bfad"
+    }
+  ]
+}
