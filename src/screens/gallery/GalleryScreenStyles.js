@@ -1,10 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {COLORS, FONT, SHADOWS, SIZES} from '../../constants/theme';
+import {COLORS, FONT, SIZES} from '../../constants/theme';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: SIZES.medium,
+    backgroundColor: COLORS.tertiary,
   },
 
   galleryHeader: {
@@ -39,5 +40,58 @@ export const styles = StyleSheet.create({
   filterBar: {
     padding: SIZES.medium,
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: 62,
+  },
+
+  /* ------- DATE PICKER ------ */
+
+  pickerTextWithoutDate: {
+    color: COLORS.secondary,
+    fontSize: SIZES.medium,
+    fontFamily: FONT.bold,
+  },
+
+  pickerTextWithDate: {
+    color: COLORS.tertiary,
+    fontSize: SIZES.medium,
+    fontFamily: FONT.bold,
+  },
+
+  pickerWithoutDate: {
+    backgroundColor: COLORS.primaryTransp,
+    padding: SIZES.small,
+    borderRadius: SIZES.small,
+  },
+
+  pickerWithDate: {
+    backgroundColor: COLORS.primary,
+    padding: SIZES.small,
+    borderRadius: SIZES.small,
+  },
+
+  filterBtnDisabled: {
+    padding: SIZES.small,
+    borderRadius: SIZES.small,
+    backgroundColor: COLORS.lightGrey,
+  },
+
+  filterBtn: {
+    padding: SIZES.xSmall,
+    borderRadius: SIZES.small,
+    backgroundColor: COLORS.secondary,
+  },
+
+  filterBtnText: {
+    fontFamily: FONT.bold,
+    fontSize: SIZES.large,
+    color: COLORS.tertiary,
+  },
+
+  filterBtnTextDisabled: {
+    fontFamily: FONT.bold,
+    fontSize: SIZES.large,
+    color: COLORS.grey,
   },
 });

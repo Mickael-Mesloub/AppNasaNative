@@ -3,26 +3,46 @@ import React, {useState, useEffect} from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import styles from './DatePickerStyles';
 import {formatDate} from '../../helpers/utils';
+import FilterButton from '../filterButton/FilterButton';
 
 const DatePicker = ({data, onDateChange}) => {
   const [mode, setMode] = useState('date');
-  const [showStartPicker, setShowStartPicker] = useState(false);
-  const [showEndPicker, setShowEndPicker] = useState(false);
-  const [startText, setStartText] = useState('Find by date');
-  //   const [endText, setEndText] = useState('To');
+  const [show, setShow] = useState(false);
+  const [dateString, setDateString] = useState('Find by date');
   const [startDate, setStartDate] = useState(new Date());
+  const [filteredPicture, setFilteredPicture] = useState(null);
+
+  //   const [showEndPicker, setShowEndPicker] = useState(false);
+  //   const [endText, setEndText] = useState('To');
   //   const [endDate, setEndDate] = useState(new Date());
 
-  const onChangeStartDate = (event, selectedStartDate) => {
-    const currentDate = selectedStartDate || startDate;
-    setShowStartPicker(!showStartPicker);
-    setStartDate(selectedStartDate);
+  const onChangeDate = (e, selectedDate) => {
+    const currentDate = selectedDate || startDate;
+    setShow(!show);
+    setStartDate(selectedDate);
 
     const formattedDate = formatDate(currentDate);
 
-    setStartText(formattedDate);
-    onDateChange(formattedDate);
+    setDateString(formattedDate);
   };
+
+  const showMode = currentMode => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const filterPerDate = date => {
+    const filteredData = data.filter(item => item.date === formatDate(date));
+    setFilteredPicture(filteredData);
+  };
+
+  useEffect(() => {
+    console.log(filteredPicture);
+  }, [filteredPicture]);
 
   //   const onChangeEndDate = (e, selectedEndDate) => {
   //     const currentDate = selectedEndDate || endDate;
@@ -34,57 +54,36 @@ const DatePicker = ({data, onDateChange}) => {
   //     setEndText(formattedDate);
   //   };
 
-  const showPickerMode = (setter, currentMode) => {
-    setter(true);
-    setMode(currentMode);
-  };
-
-  // ******************** ******************** ******************** ******************** ******************** ********************
-  // ******************** WIP - TESTS FOR FILTERING/SORTING DATA ******************** ******************** ***********************
-  // ******************** ******************** ******************** **************************************** *********************
-
-  const filterPerDate = pickerDate => {
-    const filteredPictures = data.filter(item =>
-      item.date.includes(pickerDate),
-    );
-    console.log(filteredPictures);
-  };
-
-  onPress = data => {
-    data.forEach(item => {
-      if (formatDate(startDate) === item.date) {
-        console.log(
-          `La startDate ${formatDate(startDate)} et la date de l'image ${
-            item.date
-          } sont les mêmes !`,
-        );
-      }
-      //    else if (formatDate(endDate) === item.date) {
-      //     console.log(
-      //       `La endDate ${formatDate(endDate)} et la date de l'image ${
-      //         item.date
-      //       } sont les mêmes !`,
-      //     );
-      //   }
-    });
-  };
-
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={
-          startText === 'Find by date'
+          dateString === 'Find by date'
             ? styles.pickerWithoutDate
             : styles.pickerWithDate
         }
-        onPress={() => showPickerMode(setShowStartPicker, 'date')}>
+        onPress={showDatepicker}>
         <Text
           style={
-            startText === 'Find by date'
+            dateString === 'Find by date'
               ? styles.pickerTextWithoutDate
               : styles.pickerTextWithDate
           }>
-          {startText}
+          {dateString}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={
+          data !== 'Find by date' ? styles.filterBtn : styles.filterBtnDisabled
+        }
+        onPress={() => filterPerDate(startDate)}>
+        <Text
+          style={
+            data !== 'Find by date'
+              ? styles.filterBtnText
+              : styles.filterBtnTextDisabled
+          }>
+          Filter
         </Text>
       </TouchableOpacity>
 
@@ -92,7 +91,7 @@ const DatePicker = ({data, onDateChange}) => {
         style={
           endText === 'To' ? styles.pickerWithoutDate : styles.pickerWithDate
         }
-        onPress={() => showPickerMode(setShowEndPicker, 'date')}>
+        onPress={() => showMode(setShowEndPicker, 'date')}>
         <Text
           style={
             endText === 'To'
@@ -103,24 +102,7 @@ const DatePicker = ({data, onDateChange}) => {
         </Text>
       </TouchableOpacity> */}
 
-      <TouchableOpacity
-        style={
-          startText !== 'Find by date'
-            ? styles.filterBtn
-            : styles.filterBtnDisabled
-        }
-        onPress={() => filterPerDate(data.date)}>
-        <Text
-          style={
-            startText !== 'Find by date'
-              ? styles.filterBtnText
-              : styles.filterBtnTextDisabled
-          }>
-          Filter
-        </Text>
-      </TouchableOpacity>
-
-      {showStartPicker && (
+      {show && (
         <DateTimePicker
           testID="startDatePicker"
           minimumDate={new Date(1995, 6, 16)}
@@ -128,7 +110,7 @@ const DatePicker = ({data, onDateChange}) => {
           mode={mode}
           value={startDate}
           display="default"
-          onChange={onChangeStartDate}
+          onChange={onChangeDate}
         />
       )}
       {/* {showEndPicker && (
