@@ -6,30 +6,26 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
-  Pressable,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {GET} from '../../helpers/fetch';
 // import {API_URL, API_KEY} from '@env';
 import {COLORS} from '../../constants/theme';
 import {styles} from './GalleryScreenStyles';
-import DateTimePicker from '../../components/datePicker/DateTimePicker';
-import {formatDate, share} from '../../helpers/utils';
+import {share} from '../../helpers/utils';
 import ImageModal from '../../components/modal/ImageModal';
 import IconButton from '../../components/iconButton/IconButton';
 
 const GalleryScreen = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [isReversed, setIsReversed] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [filteredImages, setFilteredImages] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
+  // got issues with react-native-dotenv. Temporarily storing env variables here... :(
   const API_URL = 'https://api.nasa.gov/planetary/apod';
   const API_KEY = 'eSxMHMlniHW25NU8dmhu5saDeoVYlraYEw0fEKfb';
+
   const endpoints = ['?api_key=', '&start_date=2023-07-20'];
 
   const fetchData = async () => {
@@ -50,10 +46,6 @@ const GalleryScreen = ({navigation}) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log('SELECTED IMAGE = ' + selectedImage);
-  }, [selectedImage]);
-
   const renderItem = ({item}) => {
     return (
       <>
@@ -61,7 +53,7 @@ const GalleryScreen = ({navigation}) => {
           style={styles.galleryPictureWrapper}
           onPress={() => handleOpenModal(item)}>
           <Image
-            source={{uri: item.url}}
+            source={{uri: item?.url}}
             resizeMode="cover"
             style={styles.galleryPicture}
           />
@@ -86,27 +78,6 @@ const GalleryScreen = ({navigation}) => {
     setSelectedImage(null);
   };
 
-  // ******************** ******************** ******************** ******************** ******************** ********************
-  // ******************** ********************  WIP - TESTS FOR FILTERING/SORTING DATA ******************** ******************** ***********************
-  // ******************** ******************** ******************** **************************************** *********************
-
-  //   Reverses the data order
-  const toggleChangeOrder = () => {
-    setIsReversed(!isReversed);
-  };
-
-  //   Displays the data items from the most recent to older, or the other way
-  const displayedData = isReversed ? [...data].reverse() : data;
-
-  useEffect(() => {
-    if (data) {
-      const filteredData = data.filter(item => item.date === date);
-      setFilteredImages(filteredData);
-      console.log('FILTERED PICTURE DATE = ' + filteredData);
-      console.log('FULLDATE =' + date);
-    }
-  }, [date, data]);
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.galleryHeader}>
@@ -120,30 +91,19 @@ const GalleryScreen = ({navigation}) => {
         />
         <Text style={styles.galleryHeaderTitle}>Gallery</Text>
       </View>
-      <View style={styles.filterBar}>
-        {/********************* ********************  WIP  ********************* ******************** */}
-
-        {/* <DateTimePicker data={data} onDateChange={onDateChange} /> */}
-      </View>
-
-      {/* <Pressable onPress={toggleChangeOrder}>
-        <Text style={{color: COLORS.primary}}>Toggle order</Text>
-      </Pressable> */}
-
-      {/********************* ********************  WIP  ********************* ******************** */}
 
       {isLoading ? (
         <ActivityIndicator size={'large'} color={COLORS.secondary} />
       ) : (
-        <>
+        <View style={styles.galleryWrapper}>
           <FlatList
-            data={displayedData}
+            data={data}
             renderItem={renderItem}
             numColumns={2}
             columnWrapperStyle={{justifyContent: 'space-between'}}
-            keyExtractor={item => item.date + '_key'}
+            keyExtractor={item => item?.date + '_key'}
           />
-        </>
+        </View>
       )}
     </SafeAreaView>
   );

@@ -1,4 +1,4 @@
-import {View, Text, Image, ActivityIndicator, Pressable} from 'react-native';
+import {View, Text, Image, ActivityIndicator} from 'react-native';
 import React from 'react';
 import {styles} from './HomePictureCardStyles';
 import {COLORS, SIZES} from '../../../constants/theme';

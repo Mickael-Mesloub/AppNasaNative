@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: SIZES.medium,
+    backgroundColor: COLORS.tertiary,
   },
 
   galleryHeader: {
@@ -23,11 +24,9 @@ export const styles = StyleSheet.create({
   },
 
   galleryPictureWrapper: {
-    flex: 1,
     padding: SIZES.xSmall,
     width: '50%',
     backgroundColor: COLORS.tertiary,
-    borderColor: COLORS.red,
   },
 
   galleryPicture: {
