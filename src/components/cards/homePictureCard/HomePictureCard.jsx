@@ -36,9 +36,11 @@ const PictureCard = ({data}) => {
       )}
       <View style={{paddingTop: SIZES.small}}>
         <Text style={styles.picOfTheDayTitle}>{data?.title}</Text>
-        <Text style={styles.picOfTheDayCopyright}>
-          Copyright: {data?.copyright}
-        </Text>
+        {data.copyright && (
+          <Text style={styles.picOfTheDayCopyright}>
+            Copyright: {data?.copyright}
+          </Text>
+        )}
       </View>
     </View>
   );

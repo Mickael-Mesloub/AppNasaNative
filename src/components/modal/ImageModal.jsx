@@ -44,9 +44,11 @@ const ImageModal = ({selectedImage, modalVisible, handleCloseModal, share}) => {
                 <Text style={styles.modalPicExplanation}>
                   {selectedImage?.explanation}
                 </Text>
-                <Text style={styles.modalPicCopyright}>
-                  Copyright: {selectedImage?.copyright}
-                </Text>
+                {selectedImage.copyright && (
+                  <Text style={styles.modalPicCopyright}>
+                    Copyright: {selectedImage?.copyright}
+                  </Text>
+                )}
               </View>
             </ScrollView>
           </View>
