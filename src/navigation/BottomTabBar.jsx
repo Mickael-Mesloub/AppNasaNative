@@ -59,7 +59,7 @@ const BottomTabBar = () => {
       <Tab.Screen
         name={galleryName}
         component={Gallery}
-        options={tabScreenOptions}
+        options={{headerShown: false}}
       />
     </Tab.Navigator>
   );

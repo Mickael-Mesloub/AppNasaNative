@@ -4,24 +4,49 @@ import {COLORS, FONT, SHADOWS, SIZES} from '../../constants/theme';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: SIZES.medium,
     backgroundColor: COLORS.tertiary,
   },
 
   galleryHeader: {
-    paddingHorizontal: SIZES.xSmall,
+    padding: SIZES.xxSmall,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.tertiary,
+    backgroundColor: '#fff',
   },
 
   galleryHeaderTitle: {
     fontFamily: FONT.bold,
-    fontSize: SIZES.large,
+    fontSize: SIZES.xLarge,
     color: COLORS.secondary,
     padding: SIZES.small,
     verticalAlign: 'middle',
   },
+
+  // GALLERY PRESENTATION
+
+  galleryPresentationWrapper: {
+    padding: SIZES.medium,
+    gap: SIZES.xSmall,
+  },
+
+  galleryPresentationTitle: {
+    fontFamily: FONT.semibold,
+    fontSize: SIZES.xxLarge,
+    color: COLORS.secondary,
+  },
+
+  galleryPresentationExplanation: {
+    fontFamily: FONT.regular,
+    fontSize: SIZES.medium,
+    color: COLORS.primary,
+  },
+
+  keyword: {
+    color: COLORS.secondary,
+    fontFamily: FONT.semibold,
+  },
+
+  // GALLERY ITEMS
 
   galleryPictureWrapper: {
     padding: SIZES.xSmall,
@@ -35,8 +60,21 @@ export const styles = StyleSheet.create({
     borderRadius: SIZES.xSmall,
   },
 
-  filterBar: {
-    padding: SIZES.medium,
-    flexDirection: 'row',
+  loadMoreWrapper: {},
+
+  loadMoreBtn: {
+    padding: SIZES.xSmall,
+    backgroundColor: COLORS.secondary,
+  },
+
+  loadMoreText: {
+    fontFamily: FONT.semibold,
+    color: COLORS.tertiary,
+    fontSize: SIZES.medium,
+  },
+
+  loadMoreLoader: {
+    marginVertical: SIZES.medium,
+    alignItems: 'center',
   },
 });

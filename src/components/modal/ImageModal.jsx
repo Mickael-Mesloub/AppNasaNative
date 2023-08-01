@@ -23,7 +23,7 @@ const ImageModal = ({selectedImage, modalVisible, handleCloseModal, share}) => {
                 }}
                 onPress={handleCloseModal}
               />
-              <Text style={styles.modalPicDate}>{selectedImage.date}</Text>
+              <Text style={styles.modalPicDate}>{selectedImage?.date}</Text>
               <IconButton
                 iconOptions={{
                   name: 'share-social',
@@ -34,18 +34,18 @@ const ImageModal = ({selectedImage, modalVisible, handleCloseModal, share}) => {
               />
             </View>
             <Image
-              source={{uri: selectedImage.url}}
+              source={{uri: selectedImage?.url}}
               style={styles.modalImage}
               resizeMode="cover"
             />
             <ScrollView>
               <View style={styles.modalPicLegendWrapper}>
-                <Text style={styles.modalPicTitle}>{selectedImage.title}</Text>
+                <Text style={styles.modalPicTitle}>{selectedImage?.title}</Text>
                 <Text style={styles.modalPicExplanation}>
-                  {selectedImage.explanation}
+                  {selectedImage?.explanation}
                 </Text>
                 <Text style={styles.modalPicCopyright}>
-                  {selectedImage.copyright}
+                  Copyright: {selectedImage?.copyright}
                 </Text>
               </View>
             </ScrollView>
