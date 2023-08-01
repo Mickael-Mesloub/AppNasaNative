@@ -2,7 +2,6 @@ import {
   View,
   Text,
   SafeAreaView,
-  Image,
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
@@ -10,43 +9,39 @@ import {
 import React, {useEffect, useState} from 'react';
 import {GET} from '../../helpers/fetch';
 // import {API_URL, API_KEY} from '@env';
-import {COLORS} from '../../constants/theme';
+import {COLORS, SIZES} from '../../constants/theme';
 import {styles} from './GalleryScreenStyles';
-// import DateTimePicker from '../../components/datePicker/DateTimePicker';
-import DateTimePicker from '@react-native-community/datetimepicker';
-
 import {formatDate, share} from '../../helpers/utils';
 import ImageModal from '../../components/modal/ImageModal';
 import IconButton from '../../components/iconButton/IconButton';
+import FastImage from 'react-native-fast-image';
 
 const GalleryScreen = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [isReversed, setIsReversed] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-  const [dateString, setDateString] = useState('Find by date');
-  const [startDate, setStartDate] = useState(new Date());
-  const [filteredPicture, setFilteredPicture] = useState(null);
+  const [newStartDate, setNewStartDate] = useState(null);
+  const [newEndDate, setNewEndDate] = useState(null);
 
   // got issues with react-native-dotenv. Temporarily storing env variables here... :(
   const API_URL = 'https://api.nasa.gov/planetary/apod';
   const API_KEY = 'eSxMHMlniHW25NU8dmhu5saDeoVYlraYEw0fEKfb';
-  const endpoints = ['?api_key=', '&start_date=2023-07-20'];
 
-  const fetchData = async (startDateEndpoint, endDateEndpoint) => {
+  const today = new Date();
+  const DAY = 86_400_000;
+
+  const fetchData = async (startDate, endDate) => {
     try {
-      const response = await fetch(
-        `${API_URL}${endpoints[0]}${API_KEY}&start_date=${formatDate(
-          startDateEndpoint,
-        )}&end_date=${formatDate(endDateEndpoint)}`,
+      const data = await GET(
+        `${API_URL}?api_key=${API_KEY}&start_date=${formatDate(
+          startDate,
+        )}&end_date=${formatDate(endDate)}`,
       );
-      const data = await response.json();
-      setData(data);
+      return data;
     } catch (error) {
       console.error(error);
+      return null;
     } finally {
       setIsLoading(false);
     }
@@ -54,8 +49,40 @@ const GalleryScreen = ({navigation}) => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchData(startDate, startDate);
-  }, [startDate]);
+    const updatedStartDate = new Date(today.getTime() - 10 * DAY);
+    setNewStartDate(updatedStartDate);
+    fetchData(updatedStartDate, today).then(data => {
+      if (!data) {
+        alert(
+          'An error has occurred when trying to load data. Try again later. You are getting redirected...',
+        );
+        setTimeout(() => {
+          navigation.goBack();
+        }, 3000);
+      }
+      setData(data.reverse());
+      setNewEndDate(new Date(updatedStartDate.getTime() - 1 * DAY));
+    });
+  }, []);
+
+  const loadMoreItems = () => {
+    const updatedStartDate = new Date(newStartDate.getTime() - 10 * DAY);
+    setNewStartDate(updatedStartDate);
+    fetchData(updatedStartDate, newEndDate).then(newData => {
+      if (!newData) {
+        alert(
+          'An error has occurred when trying to load data. Try again later. You are getting redirected...',
+        );
+        setTimeout(() => {
+          navigation.goBack();
+        }, 3000);
+      }
+      setData([...data, ...newData.reverse()]);
+      setNewEndDate(new Date(updatedStartDate.getTime() - 1 * DAY));
+    });
+  };
+
+  // FLATLIST RENDER FUNCTIONS
 
   const renderItem = ({item}) => {
     return (
@@ -63,10 +90,13 @@ const GalleryScreen = ({navigation}) => {
         <TouchableOpacity
           style={styles.galleryPictureWrapper}
           onPress={() => handleOpenModal(item)}>
-          <Image
-            source={{uri: item.url}}
-            resizeMode="cover"
+          <FastImage
             style={styles.galleryPicture}
+            source={{
+              uri: item?.url,
+              priority: FastImage.priority.high,
+            }}
+            resizeMode={FastImage.resizeMode.cover}
           />
         </TouchableOpacity>
         <ImageModal
@@ -79,6 +109,16 @@ const GalleryScreen = ({navigation}) => {
     );
   };
 
+  const renderLoader = () => {
+    return (
+      <View style={styles.loadMoreLoader}>
+        <ActivityIndicator size={'large'} color={COLORS.secondary} />
+      </View>
+    );
+  };
+
+  // MODAL WHEN TAPPING AN ITEM
+
   const handleOpenModal = image => {
     setSelectedImage(image);
     setModalVisible(true);
@@ -88,49 +128,6 @@ const GalleryScreen = ({navigation}) => {
     setModalVisible(false);
     setSelectedImage(null);
   };
-
-  /* ---------------------------------------------------------- */
-  /* ---------------------------------------------------------- */
-  /* ---------------------------------------------------------- */
-
-  const onChangeDate = (e, selectedDate) => {
-    const currentDate = selectedDate || startDate;
-    setShow(!show);
-    setStartDate(currentDate);
-
-    const formattedDate = formatDate(currentDate);
-
-    setDateString(formattedDate);
-    filterPerDate(currentDate); // filtering the data every time the date is changed
-  };
-
-  const showMode = currentMode => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const filterPerDate = date => {
-    if (data) {
-      const filteredData = data.filter(item => item.date === formatDate(date));
-      setFilteredPicture(filteredData);
-    }
-  };
-
-  useEffect(() => {
-    console.log('THE PICTURE = ' + filteredPicture);
-  }, [filteredPicture]);
-
-  //   Reverses the data order
-  const toggleChangeOrder = () => {
-    setIsReversed(!isReversed);
-  };
-
-  //   Displays the data items from the most recent to older, or the other way
-  const displayedData = isReversed ? [...data].reverse() : data;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -145,71 +142,38 @@ const GalleryScreen = ({navigation}) => {
         />
         <Text style={styles.galleryHeaderTitle}>Gallery</Text>
       </View>
-      <View style={styles.filterBar}>
-        {/* <View style={styles.container}> */}
-        <TouchableOpacity
-          style={
-            dateString === 'Find by date'
-              ? styles.pickerWithoutDate
-              : styles.pickerWithDate
-          }
-          onPress={showDatepicker}>
-          <Text
-            style={
-              dateString === 'Find by date'
-                ? styles.pickerTextWithoutDate
-                : styles.pickerTextWithDate
-            }>
-            {dateString}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={
-            data !== 'Find by date'
-              ? styles.filterBtn
-              : styles.filterBtnDisabled
-          }
-          onPress={() => filterPerDate(startDate)}>
-          <Text
-            style={
-              data !== 'Find by date'
-                ? styles.filterBtnText
-                : styles.filterBtnTextDisabled
-            }>
-            Filter
-          </Text>
-        </TouchableOpacity>
-        {show && (
-          <DateTimePicker
-            testID="startDatePicker"
-            minimumDate={new Date(1995, 6, 16)}
-            maximumDate={new Date()}
-            mode={mode}
-            value={startDate}
-            display="default"
-            onChange={onChangeDate}
-          />
-        )}
-      </View>
-      {/* </View> */}
-
-      {/* <Pressable onPress={toggleChangeOrder}>
-        <Text style={{color: COLORS.primary}}>Toggle order</Text>
-      </Pressable> */}
-
-      {/********************* ********************  WIP  ********************* ******************** */}
 
       {isLoading ? (
-        <ActivityIndicator size={'large'} color={COLORS.secondary} />
+        <View style={{padding: SIZES.medium}}>
+          <ActivityIndicator size={'large'} color={COLORS.secondary} />
+        </View>
       ) : (
         <>
-          <FlatList
-            data={displayedData}
-            renderItem={renderItem}
-            numColumns={2}
-            columnWrapperStyle={{justifyContent: 'space-between'}}
-            keyExtractor={item => item.date + '_key'}
-          />
+          <View style={styles.galleryPresentationWrapper}>
+            <Text style={styles.galleryPresentationTitle}>
+              Discover the cosmos!
+            </Text>
+            <Text style={styles.galleryPresentationExplanation}>
+              <Text style={styles.keyword}>Each day</Text> a different image or
+              photograph of our fascinating universe is featured, along with a
+              brief explanation written by a professional astronomer.
+            </Text>
+            <Text style={styles.keyword}>
+              Tips : Tap an image to see it's details!
+            </Text>
+          </View>
+          <View style={{flex: 1}}>
+            <FlatList
+              data={data}
+              renderItem={renderItem}
+              numColumns={2}
+              ListFooterComponent={renderLoader}
+              onEndReached={loadMoreItems}
+              onEndReachedThreshold={0.1}
+              columnWrapperStyle={{justifyContent: 'space-between'}}
+              keyExtractor={item => item?.date}
+            />
+          </View>
         </>
       )}
     </SafeAreaView>

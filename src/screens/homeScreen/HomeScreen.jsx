@@ -6,6 +6,7 @@ import {GET} from '../../helpers/fetch';
 import HomePictureCard from '../../components/cards/homePictureCard/HomePictureCard';
 import {share} from '../../helpers/utils';
 import ImageModal from '../../components/modal/ImageModal';
+import {COLORS} from '../../constants/theme';
 
 const HomeScreen = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +49,7 @@ const HomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles?.container}>
       {isLoading ? (
-        <ActivityIndicator size={'large'} />
+        <ActivityIndicator size={'large'} color={COLORS.secondary} />
       ) : (
         <>
           {data && (
@@ -57,10 +58,10 @@ const HomeScreen = ({navigation}) => {
                 <HomePictureCard data={data} />
               </TouchableOpacity>
               <ImageModal
-                selectedImage={data}
+                selectedImage={selectedImage}
                 modalVisible={modalVisible}
                 handleCloseModal={handleCloseModal}
-                share={() => share(data)}
+                share={() => share(selectedImage)}
               />
             </>
           )}

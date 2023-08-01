@@ -1,4 +1,4 @@
-import {View, Text, Image, ActivityIndicator, Pressable} from 'react-native';
+import {View, Text, Image, ActivityIndicator} from 'react-native';
 import React from 'react';
 import {styles} from './HomePictureCardStyles';
 import {COLORS, SIZES} from '../../../constants/theme';
@@ -36,7 +36,11 @@ const PictureCard = ({data}) => {
       )}
       <View style={{paddingTop: SIZES.small}}>
         <Text style={styles.picOfTheDayTitle}>{data?.title}</Text>
-        <Text style={styles.picOfTheDayCopyright}>{data?.copyright}</Text>
+        {data.copyright && (
+          <Text style={styles.picOfTheDayCopyright}>
+            Copyright: {data?.copyright}
+          </Text>
+        )}
       </View>
     </View>
   );
