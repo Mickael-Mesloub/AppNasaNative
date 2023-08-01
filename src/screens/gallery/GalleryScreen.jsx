@@ -9,7 +9,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import {GET} from '../../helpers/fetch';
 // import {API_URL, API_KEY} from '@env';
-import {COLORS, FONT, SIZES} from '../../constants/theme';
+import {COLORS, SIZES} from '../../constants/theme';
 import {styles} from './GalleryScreenStyles';
 import {formatDate, share} from '../../helpers/utils';
 import ImageModal from '../../components/modal/ImageModal';
@@ -144,7 +144,9 @@ const GalleryScreen = ({navigation}) => {
       </View>
 
       {isLoading ? (
-        <ActivityIndicator size={'large'} color={COLORS.secondary} />
+        <View style={{padding: SIZES.medium}}>
+          <ActivityIndicator size={'large'} color={COLORS.secondary} />
+        </View>
       ) : (
         <>
           <View style={styles.galleryPresentationWrapper}>
